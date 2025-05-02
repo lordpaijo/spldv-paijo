@@ -1,6 +1,30 @@
 use raylib::prelude::*;
 use matematika_rs::sistem::aljabar::SistemPersamaan;
 
+fn draw_rounded_rect_with_border(
+    d: &mut RaylibDrawHandle,
+    rect: Rectangle,
+    roundness: f32,
+    segments: i32,
+    border_thickness: f32,
+    border_color: Color,
+    fill_color: Color,
+) {
+    // Draw outer (border)
+    d.draw_rectangle_rounded(&rect, roundness, segments, border_color);
+
+    // Create inner rectangle (shrunk to fit inside border)
+    let inner_rect = Rectangle::new(
+        rect.x + border_thickness,
+        rect.y + border_thickness,
+        rect.width - 2.0 * border_thickness,
+        rect.height - 2.0 * border_thickness,
+    );
+
+    // Draw inner (fill)
+    d.draw_rectangle_rounded(&inner_rect, roundness, segments, fill_color);
+}
+
 fn main() {
     let (mut rl_handle, rl_thread) = raylib::init()
         .size(860, 700)
@@ -40,7 +64,7 @@ fn main() {
         if rl_handle.is_mouse_button_pressed(MouseButton::MOUSE_BUTTON_LEFT) {
             let field_width = 80.0;
             let field_height = 46.0;
-            let spacing = 10.0;
+            let spacing = 5.0;
             let start_x = (860.0 - (field_width * 3.0 + spacing * 2.0 + 80.0)) / 2.0;
             let mut y = 260.0;
 
@@ -164,12 +188,9 @@ fn main() {
         // Draw "Hitung" button
         let mouse_pos = d.get_mouse_position();
         let hitung_hovered = hitung_rect.check_collision_point_rec(mouse_pos);
-        let hitung_color = if hitung_hovered {
-            Color::new(121, 116, 14, 255)
-        } else {
-            Color::new(152, 151, 26, 255)
-        };
-        d.draw_rectangle_rec(hitung_rect, hitung_color);
+        let hitung_color = if hitung_hovered { Color::new(121, 116, 14, 255) } else { Color::new(152, 151, 26, 255) };
+        let hitung_border_color = if hitung_hovered { Color::new(104, 157, 106, 255) } else { Color::new(142, 192, 124, 255) };
+        draw_rounded_rect_with_border(&mut d, hitung_rect, 0.75, 10, 3.0, hitung_border_color, hitung_color);
         d.draw_text_ex(&font_normal, "Hitung", Vector2::new(start_x as f32 + 44.0, (y + 83) as f32), 30.0, 2.0, text_color);
 
         // Result
