@@ -1,5 +1,19 @@
 use raylib::prelude::*;
 use matematika_rs::sistem::aljabar::SistemPersamaan;
+use std::fs::File;
+use std::io::Write;
+use std::env::temp_dir;
+use std::path::PathBuf;
+
+const ROBOTO_EXTRA_BOLD: &[u8] = include_bytes!("resources/static/Roboto-ExtraBold.ttf");
+const ROBOTO_BOLD: &[u8] = include_bytes!("resources/static/Roboto-Bold.ttf");
+
+fn write_embedded_font(data: &[u8], filename: &str) -> PathBuf {
+    let temp_path = temp_dir().join(filename);
+    let mut file = File::create(&temp_path).expect("Failed to create temp font file");
+    file.write_all(data).expect("Failed to write font");
+    temp_path
+}
 
 fn draw_rounded_rect_with_border(
     d: &mut RaylibDrawHandle,
@@ -34,12 +48,15 @@ fn main() {
     rl_handle.set_exit_key(None);
     rl_handle.set_target_fps(60);
 
+    let font_header_path = write_embedded_font(ROBOTO_EXTRA_BOLD, "roboto_extrabold.ttf");
+    let font_normal_path = write_embedded_font(ROBOTO_BOLD, "roboto_bold.ttf");
+
     let font_header = rl_handle
-        .load_font_ex(&rl_thread, "src/resources/SF-Pro-Display-Heavy.otf", 55, None)
+        .load_font_ex(&rl_thread, font_header_path.to_str().unwrap(), 55, None)
         .expect("Failed to load header font");
 
     let font_normal = rl_handle
-        .load_font_ex(&rl_thread, "src/resources/SF-Pro-Display-Bold.otf", 30, None)
+        .load_font_ex(&rl_thread, font_normal_path.to_str().unwrap(), 30, None)
         .expect("Failed to load normal font");
 
     let bg = Color::new(251, 241, 199, 255);
