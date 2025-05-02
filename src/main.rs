@@ -200,5 +200,6 @@ fn main() {
         };
         d.draw_text_ex(&font_normal, "Hasil:\n", Vector2::new(start_x as f32, 500.0), 30.0, 2.0, text_color);
         d.draw_text_ex(&font_normal, &result_text, Vector2::new(start_x as f32, 530.0), 30.0, 2.0, text_color);
+        d.draw_text_ex(&font_normal, "Tab: \t\t\t\t\tcol += 1\nShift+Tab: col -= 1", Vector2::new(600.0, 620.0), 25.0, 2.0, text_color);
     }
 }

@@ -2,6 +2,11 @@
 name = "spldv-paijo"
 version = "0.1.0"
 edition = "2024"
+authors = ["LordPaijo (Iyan) <iyanmaumakan.56@gmail.com>"]
+description = "Kalkulator SPLDV sederhana untuk orang malas seperti saya."
+license = "MIT"
+repository = "https://github.com/lordpaijo/spldv-paijo"
+documentation = "https://docs.rs/spldv-paijo"
 
 [dependencies]
 matematika-rs = "0.3.2"
